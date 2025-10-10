@@ -1,4 +1,5 @@
 ﻿using CalculatorCore;
+using System;
 
 class Program
 {
@@ -8,8 +9,17 @@ class Program
         var calculatorService = new CalculatorService(calculator);
 
         Console.WriteLine("=== Калькулятор ===");
-        Console.WriteLine("Доступные операции: +, -, *, /");
-        Console.WriteLine("Пример: 5 + 3");
+        Console.WriteLine("Доступные операции: +, -, *, /, скобки (), факториал (!)");
+        Console.WriteLine("Тригонометрические функции (в градусах): sin, cos, tan, ctg");
+        Console.WriteLine("Константы: e (2.71828...), pi (3.14159...)");
+        Console.WriteLine("Поддерживаются числа с экспонентой: 12e3 = 12000, 1.23e-5 = 0.0000123");
+        Console.WriteLine("Примеры:");
+        Console.WriteLine("  5+3, (2+3)*4, 10/2, -1*(-2)");
+        Console.WriteLine("  sin(30), cos(45), tan(60), ctg(45)");
+        Console.WriteLine("  5!, 3!*2, sin(90)+cos(0)");
+        Console.WriteLine("  12e3 (12000), 1.23e-5 (0.0000123), 12*e (32.619)");
+        Console.WriteLine("  pi, 2*pi, sin(pi/2)");
+        Console.WriteLine("Пробелы между числами не допускаются!");
         Console.WriteLine("Введите 'exit' для выхода");
         Console.WriteLine();
 
@@ -23,21 +33,7 @@ class Program
 
             try
             {
-                var parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length != 3)
-                {
-                    Console.WriteLine("Ошибка: Неверный формат. Используйте: число операция число");
-                    continue;
-                }
-
-                if (!decimal.TryParse(parts[0], out var a) || !decimal.TryParse(parts[2], out var b))
-                {
-                    Console.WriteLine("Ошибка: Неверный формат чисел");
-                    continue;
-                }
-
-                var operation = parts[1];
-                var result = calculatorService.PerformOperation(operation, a, b);
+                var result = calculatorService.EvaluateExpression(input);
 
                 if (result.Success)
                     Console.WriteLine($"Результат: {result.Value}");
