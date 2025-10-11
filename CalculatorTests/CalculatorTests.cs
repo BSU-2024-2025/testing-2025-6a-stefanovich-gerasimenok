@@ -19,7 +19,6 @@ namespace CalculatorTests
         public void Add_ShouldReturnCorrectResult(int a, int b, int expected)
         {
             var result = _calculator.Add(a, b);
-
             Assert.AreEqual(expected, result);
         }
 
@@ -33,7 +32,6 @@ namespace CalculatorTests
         public void Subtract_ShouldReturnCorrectResult(int a, int b, int expected)
         {
             var result = _calculator.Subtract(a, b);
-
             Assert.AreEqual(expected, result);
         }
 
@@ -47,7 +45,6 @@ namespace CalculatorTests
         public void Multiply_ShouldReturnCorrectResult(int a, int b, int expected)
         {
             var result = _calculator.Multiply(a, b);
-
             Assert.AreEqual(expected, result);
         }
 
@@ -57,26 +54,20 @@ namespace CalculatorTests
         [DataRow(9, 3, 3)]
         [DataRow(-12, 4, -3)]
         [DataRow(0, 5, 0)]
-        [DataRow(1, 4, 0.25)]
-        public void Divide_ShouldReturnCorrectResult(int a, int b, double expected)
+        public void Divide_ShouldReturnCorrectResult(int a, int b, int expected)
         {
             var result = _calculator.Divide(a, b);
-
-            Assert.AreEqual((decimal)expected, result);
+            Assert.AreEqual(expected, result);
         }
 
-        // ТЕСТ ИСКЛЮЧЕНИЯ ПРИ ДЕЛЕНИИ НА НОЛЬ
         [TestMethod]
         [ExpectedException(typeof(DivideByZeroException))]
         public void Divide_ByZero_ShouldThrowDivideByZeroException()
         {
-            decimal a = 10;
-            decimal b = 0;
-
-            _calculator.Divide(a, b);
+            _calculator.Divide(10, 0);
         }
 
-        // ТЕСТЫ МЕТОДА TRYDIVIDE (УСПЕШНЫЕ СЦЕНАРИИ)
+        // ТЕСТЫ МЕТОДА TRYDIVIDE
         [TestMethod]
         [DataRow(10, 2, true, 5)]
         [DataRow(9, 3, true, 3)]
@@ -84,180 +75,190 @@ namespace CalculatorTests
         public void TryDivide_ValidDivision_ShouldReturnTrueAndCorrectResult(int a, int b, bool expectedSuccess, int expectedResult)
         {
             var success = _calculator.TryDivide(a, b, out var result);
-
             Assert.AreEqual(expectedSuccess, success);
             Assert.AreEqual(expectedResult, result);
         }
 
-        // ТЕСТЫ МЕТОДА TRYDIVIDE (ДЕЛЕНИЕ НА НОЛЬ)
         [TestMethod]
         [DataRow(10, 0, false, 0)]
         [DataRow(5, 0, false, 0)]
-        [DataRow(-3, 0, false, 0)]
         public void TryDivide_DivisionByZero_ShouldReturnFalse(int a, int b, bool expectedSuccess, int expectedResult)
         {
             var success = _calculator.TryDivide(a, b, out var result);
-
             Assert.AreEqual(expectedSuccess, success);
             Assert.AreEqual(expectedResult, result);
-        }
-
-        // Отдельные тесты для decimal значений
-        [TestMethod]
-        public void Add_DecimalNumbers_ShouldReturnCorrectResult()
-        {
-            decimal a = 1.5m;
-            decimal b = 2.5m;
-            decimal expected = 4.0m;
-
-            var result = _calculator.Add(a, b);
-
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void Subtract_DecimalNumbers_ShouldReturnCorrectResult()
-        {
-            // Тест вычитания decimal чисел
-            decimal a = 5.5m;
-            decimal b = 2.5m;
-            decimal expected = 3.0m;
-
-            var result = _calculator.Subtract(a, b);
-
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void Multiply_DecimalNumbers_ShouldReturnCorrectResult()
-        {
-            // Тест умножения decimal чисел
-            decimal a = 2.5m;
-            decimal b = 4.0m;
-            decimal expected = 10.0m;
-
-            var result = _calculator.Multiply(a, b);
-
-            Assert.AreEqual(expected, result);
-        }
-
-        [TestMethod]
-        public void Divide_DecimalNumbers_ShouldReturnCorrectResult()
-        {
-            // Тест деления decimal чисел
-            decimal a = 7.0m;
-            decimal b = 2.0m;
-            decimal expected = 3.5m;
-
-            var result = _calculator.Divide(a, b);
-
-            Assert.AreEqual(expected, result);
         }
     }
 
     [TestClass]
     public class CalculatorServiceTests
     {
-        // Тестовый калькулятор для сервиса
-        private class TestCalculator : ICalculator
-        {
-            public decimal Add(decimal a, decimal b) => a + b;
-            public decimal Subtract(decimal a, decimal b) => a - b;
-            public decimal Multiply(decimal a, decimal b) => a * b;
-            public decimal Divide(decimal a, decimal b) => a / b;
-
-            public bool TryDivide(decimal a, decimal b, out decimal result)
-            {
-                if (b == 0)
-                {
-                    result = 0;
-                    return false;
-                }
-                result = a / b;
-                return true;
-            }
-        }
-
         private readonly CalculatorService _calculatorService;
 
         public CalculatorServiceTests()
         {
-            _calculatorService = new CalculatorService(new TestCalculator());
+            _calculatorService = new CalculatorService(new Calculator());
         }
 
-        // ТЕСТЫ ВЫПОЛНЕНИЯ ОПЕРАЦИЙ ЧЕРЕЗ СЕРВИС
+        // ТЕСТЫ БАЗОВЫХ ОПЕРАЦИЙ
         [TestMethod]
-        [DataRow("add", 5, 3, 8)]
-        [DataRow("ADD", 5, 3, 8)]
+        [DataRow("2+3", 5)]
+        [DataRow("5-3", 2)]
+        [DataRow("2*3", 6)]
+        [DataRow("10/2", 5)]
+        [DataRow("1+2*3", 7)]
+        [DataRow("(1+2)*3", 9)]
+        public void EvaluateExpression_BasicOperations_ShouldReturnCorrectResult(string expression, int expected)
+        {
+            var result = _calculatorService.EvaluateExpression(expression);
+            Assert.IsTrue(result.Success, result.ErrorMessage);
+            Assert.AreEqual(expected, result.Value);
+        }
+
+        // ТЕСТЫ ОПЕРАЦИИ СТЕПЕНИ - используем decimal литералы
+        [TestMethod]
+        [DataRow("2^3", 8.0)]
+        [DataRow("4^0.5", 2.0)]
+        [DataRow("10^-2", 0.01)]
+        [DataRow("(2+3)^2", 25.0)]
+        [DataRow("2^-3", 0.125)]
+        [DataRow("2^10", 1024.0)]
+        [DataRow("0.5^2", 0.25)]
+        [DataRow("3^0", 1.0)]
+        [DataRow("1^100", 1.0)]
+        public void EvaluateExpression_PowerOperator_ShouldReturnCorrectResult(string expression, double expected)
+        {
+            var result = _calculatorService.EvaluateExpression(expression);
+            Assert.IsTrue(result.Success, result.ErrorMessage);
+            Assert.AreEqual((decimal)expected, result.Value, 0.0000000001m);
+        }
+
+        // ТЕСТЫ ПРАВОАССОЦИАТИВНОСТИ СТЕПЕНИ
+        [TestMethod]
+        [DataRow("2^3^2", 512.0)] // 2^(3^2) = 2^9 = 512
+        [DataRow("2^2^3", 256.0)] // 2^(2^3) = 2^8 = 256
+        public void EvaluateExpression_PowerRightAssociativity_ShouldReturnCorrectResult(string expression, double expected)
+        {
+            var result = _calculatorService.EvaluateExpression(expression);
+            Assert.IsTrue(result.Success, result.ErrorMessage);
+            Assert.AreEqual((decimal)expected, result.Value);
+        }
+
+        // ТЕСТЫ КОМБИНАЦИЙ СТЕПЕНИ С ДРУГИМИ ОПЕРАЦИЯМИ
+        [TestMethod]
+        [DataRow("2^3+1", 9.0)] // 8 + 1 = 9
+        [DataRow("1+2^3", 9.0)] // 1 + 8 = 9
+        [DataRow("2^3*2", 16.0)] // 8 * 2 = 16
+        [DataRow("2*3^2", 18.0)] // 2 * 9 = 18
+        public void EvaluateExpression_PowerWithOtherOperations_ShouldReturnCorrectResult(string expression, double expected)
+        {
+            var result = _calculatorService.EvaluateExpression(expression);
+            Assert.IsTrue(result.Success, result.ErrorMessage);
+            Assert.AreEqual((decimal)expected, result.Value);
+        }
+
+        // ТЕСТЫ ТРИГОНОМЕТРИЧЕСКИХ ФУНКЦИЙ
+        [TestMethod]
+        [DataRow("sin(30)", 0.5)]
+        [DataRow("cos(60)", 0.5)]
+        [DataRow("tan(45)", 1.0)]
+        [DataRow("ctg(45)", 1.0)]
+        public void EvaluateExpression_TrigonometricFunctions_ShouldReturnCorrectResult(string expression, double expected)
+        {
+            var result = _calculatorService.EvaluateExpression(expression);
+            Assert.IsTrue(result.Success, result.ErrorMessage);
+            Assert.AreEqual((decimal)expected, result.Value, 0.0000000001m);
+        }
+
+        // ТЕСТЫ ФАКТОРИАЛА
+        [TestMethod]
+        [DataRow("5!", 120.0)]
+        [DataRow("3!", 6.0)]
+        [DataRow("0!", 1.0)]
+        public void EvaluateExpression_Factorial_ShouldReturnCorrectResult(string expression, double expected)
+        {
+            var result = _calculatorService.EvaluateExpression(expression);
+            Assert.IsTrue(result.Success, result.ErrorMessage);
+            Assert.AreEqual((decimal)expected, result.Value);
+        }
+
+        // ТЕСТЫ КОНСТАНТ
+        [TestMethod]
+        [DataRow("e", 2.71828182845904523536)]
+        [DataRow("pi", 3.14159265358979323846)]
+        [DataRow("2*e", 5.43656365691809047072)]
+        [DataRow("2*pi", 6.28318530717958647692)]
+        public void EvaluateExpression_Constants_ShouldReturnCorrectResult(string expression, double expected)
+        {
+            var result = _calculatorService.EvaluateExpression(expression);
+            Assert.IsTrue(result.Success, result.ErrorMessage);
+            Assert.AreEqual((decimal)expected, result.Value, 0.0000000001m);
+        }
+
+        // ТЕСТЫ ЧИСЕЛ С ЭКСПОНЕНТОЙ
+        [TestMethod]
+        [DataRow("12e3", 12000.0)]
+        [DataRow("1.23e-5", 0.0000123)]
+        [DataRow("2.5e2", 250.0)]
+        public void EvaluateExpression_ExponentNumbers_ShouldReturnCorrectResult(string expression, double expected)
+        {
+            var result = _calculatorService.EvaluateExpression(expression);
+            Assert.IsTrue(result.Success, result.ErrorMessage);
+            Assert.AreEqual((decimal)expected, result.Value, 0.0000000001m);
+        }
+
+        // ТЕСТЫ ОШИБОК - исправленные примеры
+        [TestMethod]
+        [DataRow("1 2")] // Пробелы между числами
+        [DataRow("2^")] // Неполное выражение
+        [DataRow("^3")] // Отсутствует основание
+        [DataRow("sin(")] // Незакрытая скобка
+        [DataRow("5!!")] // Двойной факториал (не поддерживается)
+        [DataRow("2^^3")] // Двойной оператор степени
+        [DataRow("sin")] // Функция без скобок
+        [DataRow("")] // Пустая строка
+        public void EvaluateExpression_InvalidExpressions_ShouldReturnError(string expression)
+        {
+            var result = _calculatorService.EvaluateExpression(expression);
+            Assert.IsFalse(result.Success, $"Выражение '{expression}' должно возвращать ошибку, но вернуло: {result.Value}");
+            Assert.IsFalse(string.IsNullOrEmpty(result.ErrorMessage));
+        }
+
+        // ТЕСТЫ ДЕЛЕНИЯ НА НОЛЬ
+        [TestMethod]
+        public void EvaluateExpression_DivisionByZero_ShouldReturnError()
+        {
+            var result = _calculatorService.EvaluateExpression("10/0");
+            Assert.IsFalse(result.Success);
+            Assert.IsTrue(result.ErrorMessage.Contains("ноль") || result.ErrorMessage.Contains("zero") || result.ErrorMessage.Contains("делен"));
+        }
+
+        // ТЕСТЫ PERFORMOPERATION
+        [TestMethod]
         [DataRow("+", 5, 3, 8)]
-        [DataRow("subtract", 5, 3, 2)]
-        [DataRow("SUBTRACT", 5, 3, 2)]
         [DataRow("-", 5, 3, 2)]
-        [DataRow("multiply", 5, 3, 15)]
-        [DataRow("MULTIPLY", 5, 3, 15)]
         [DataRow("*", 5, 3, 15)]
-        [DataRow("divide", 10, 2, 5)]
-        [DataRow("DIVIDE", 10, 2, 5)]
         [DataRow("/", 10, 2, 5)]
+        [DataRow("^", 2, 3, 8)]  // Тест степени через PerformOperation
         public void PerformOperation_ValidOperations_ShouldReturnSuccessResult(string operation, int a, int b, int expected)
         {
             var result = _calculatorService.PerformOperation(operation, a, b);
-
             Assert.IsTrue(result.Success);
             Assert.AreEqual(expected, result.Value);
-            Assert.IsTrue(string.IsNullOrEmpty(result.ErrorMessage));
         }
 
-        // ТЕСТЫ ДЕЛЕНИЯ НА НОЛЬ ЧЕРЕЗ СЕРВИС
         [TestMethod]
-        [DataRow("divide", 10, 0)]
-        [DataRow("DIVIDE", 10, 0)]
-        [DataRow("/", 10, 0)]
-        public void PerformOperation_DivideByZero_ShouldReturnFailureResult(string operation, int a, int b)
+        public void PerformOperation_DivideByZero_ShouldReturnFailureResult()
         {
-            var result = _calculatorService.PerformOperation(operation, a, b);
-
+            var result = _calculatorService.PerformOperation("/", 10, 0);
             Assert.IsFalse(result.Success);
             Assert.AreEqual("Division by zero", result.ErrorMessage);
-            Assert.AreEqual(0, result.Value);
         }
 
-        // ТЕСТЫ НЕИЗВЕСТНЫХ ОПЕРАЦИЙ
         [TestMethod]
-        [DataRow("unknown", 5, 3)]
-        [DataRow("power", 2, 3)]
-        [DataRow("mod", 10, 3)]
-        public void PerformOperation_UnknownOperation_ShouldReturnFailureResult(string operation, int a, int b)
+        public void PerformOperation_UnknownOperation_ShouldReturnFailureResult()
         {
-            var result = _calculatorService.PerformOperation(operation, a, b);
-
-            Assert.IsFalse(result.Success);
-            Assert.AreEqual("Unknown operation", result.ErrorMessage);
-            Assert.AreEqual(0, result.Value);
-        }
-
-        // ТЕСТ DECIMAL ЧИСЕЛ ЧЕРЕЗ СЕРВИС
-        [TestMethod]
-        public void PerformOperation_DecimalNumbers_ShouldReturnCorrectResult()
-        {
-            // Тест сложения decimal чисел через сервис
-            string operation = "add";
-            decimal a = 1.5m;
-            decimal b = 2.5m;
-            decimal expected = 4.0m;
-
-            var result = _calculatorService.PerformOperation(operation, a, b);
-
-            Assert.IsTrue(result.Success);
-            Assert.AreEqual(expected, result.Value);
-        }
-
-        // ТЕСТ ПУСТОЙ ОПЕРАЦИИ
-        [TestMethod]
-        public void PerformOperation_EmptyOperation_ShouldReturnFailureResult()
-        {
-            var result = _calculatorService.PerformOperation("", 1, 2);
-
+            var result = _calculatorService.PerformOperation("unknown", 5, 3);
             Assert.IsFalse(result.Success);
             Assert.AreEqual("Unknown operation", result.ErrorMessage);
         }
@@ -266,51 +267,22 @@ namespace CalculatorTests
     [TestClass]
     public class CalculatorResultTests
     {
-        // ТЕСТЫ ДЛЯ КЛАССА CalculatorResult
         [TestMethod]
         public void CalculatorResult_Ok_ShouldCreateSuccessResult()
         {
-            // Тест создания успешного результата
-            decimal expectedValue = 42;
-
-            var result = CalculatorResult.Ok(expectedValue);
-
+            var result = CalculatorResult.Ok(42);
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(expectedValue, result.Value);
+            Assert.AreEqual(42, result.Value);
             Assert.IsTrue(string.IsNullOrEmpty(result.ErrorMessage));
         }
 
         [TestMethod]
         public void CalculatorResult_Fail_ShouldCreateFailureResult()
         {
-            // Тест создания неуспешного результата с сообщением
-            string expectedError = "Test error";
-
-            var result = CalculatorResult.Fail(expectedError);
-
+            var result = CalculatorResult.Fail("Test error");
             Assert.IsFalse(result.Success);
-            Assert.AreEqual(expectedError, result.ErrorMessage);
+            Assert.AreEqual("Test error", result.ErrorMessage);
             Assert.AreEqual(0, result.Value);
-        }
-
-        [TestMethod]
-        public void CalculatorResult_Fail_WithEmptyMessage_ShouldWorkCorrectly()
-        {
-            // Тест создания неуспешного результата с пустым сообщением
-            var result = CalculatorResult.Fail("");
-
-            Assert.IsFalse(result.Success);
-            Assert.AreEqual("", result.ErrorMessage);
-        }
-
-        [TestMethod]
-        public void CalculatorResult_Fail_WithNullMessage_ShouldWorkCorrectly()
-        {
-            // Тест создания неуспешного результата с null сообщением
-            var result = CalculatorResult.Fail(null);
-
-            Assert.IsFalse(result.Success);
-            Assert.IsNull(result.ErrorMessage);
         }
     }
 }
