@@ -9,12 +9,14 @@ namespace CalculatorCore
     public class CalculatorService
     {
         private readonly ICalculator _calculator;
+        private readonly IAdvancedCalculator _advancedCalculator;
         private const decimal E = 2.71828182845904523536028747135266249775724709369995m;
         private const decimal PI = 3.14159265358979323846264338327950288419716939937510m;
 
         public CalculatorService(ICalculator calculator)
         {
             _calculator = calculator;
+            _advancedCalculator = calculator as IAdvancedCalculator;
         }
 
         public CalculatorResult PerformOperation(string operation, decimal a, decimal b)
@@ -46,6 +48,12 @@ namespace CalculatorCore
                 if (string.IsNullOrWhiteSpace(expression))
                     return CalculatorResult.Fail("Пустое выражение");
 
+                // Если доступен расширенный калькулятор, используем его
+                if (_advancedCalculator != null && ContainsAdvancedFeatures(expression))
+                {
+                    return EvaluateAdvancedExpression(expression);
+                }
+
                 // Проверяем пробелы между числами
                 if (HasSpaceBetweenNumbers(expression))
                     return CalculatorResult.Fail("Неверный формат: пробелы между числами не допускаются");
@@ -66,9 +74,59 @@ namespace CalculatorCore
             }
         }
 
+        private CalculatorResult EvaluateAdvancedExpression(string expression)
+        {
+            try
+            {
+                if (_advancedCalculator == null)
+                    return CalculatorResult.Fail("Расширенный калькулятор не доступен");
+
+                var result = _advancedCalculator.Evaluate(expression);
+                return CalculatorResult.Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return CalculatorResult.Fail($"Ошибка: {ex.Message}");
+            }
+        }
+
+        private bool ContainsAdvancedFeatures(string expression)
+        {
+            if (string.IsNullOrWhiteSpace(expression))
+                return false;
+
+            // Проверяем наличие ключевых слов
+            var lowerExpression = expression.ToLower();
+            if (Keywords.Any(k => lowerExpression.Contains(k + " ")))
+                return true;
+
+            // Проверяем наличие операторов сравнения
+            if (ComparisonOperators.Any(o => expression.Contains(o)))
+                return true;
+
+            // Проверяем наличие точки с запятой
+            if (expression.Contains(';'))
+                return true;
+
+            // Проверяем наличие оператора присваивания
+            if (expression.Contains('=') && !expression.Contains("=="))
+                return true;
+
+            return false;
+        }
+
+        private static readonly HashSet<string> Keywords = new HashSet<string>
+        {
+            "if", "else", "while", "return"
+        };
+
+        private static readonly HashSet<string> ComparisonOperators = new HashSet<string>
+        {
+            "==", "!=", ">=", "<=", ">", "<"
+        };
+
         private bool HasSpaceBetweenNumbers(string expression)
         {
-            // Проверяем, есть ли пробелы между цифрами (например: "1 2" должно быть ошибкой)
             return Regex.IsMatch(expression, @"\d\s+\d");
         }
 
