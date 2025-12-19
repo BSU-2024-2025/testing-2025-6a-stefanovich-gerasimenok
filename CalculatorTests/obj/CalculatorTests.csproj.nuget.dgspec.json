@@ -1,32 +1,37 @@
 {
   "format": 1,
   "restore": {
-    "D:\\CalculatorCore\\CalculatorTests\\CalculatorTests.csproj": {}
+    "C:\\Users\\User\\source\\repos\\BSU-2024-2025\\testing-2025-6a-stefanovich-gerasimenok\\CalculatorTests\\CalculatorTests.csproj": {}
   },
   "projects": {
-    "D:\\CalculatorCore\\CalculatorCore\\CalculatorCore.csproj": {
+    "C:\\Users\\User\\source\\repos\\BSU-2024-2025\\testing-2025-6a-stefanovich-gerasimenok\\CalculatorCore\\CalculatorCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\CalculatorCore\\CalculatorCore\\CalculatorCore.csproj",
+        "projectUniqueName": "C:\\Users\\User\\source\\repos\\BSU-2024-2025\\testing-2025-6a-stefanovich-gerasimenok\\CalculatorCore\\CalculatorCore.csproj",
         "projectName": "CalculatorCore",
-        "projectPath": "D:\\CalculatorCore\\CalculatorCore\\CalculatorCore.csproj",
+        "projectPath": "C:\\Users\\User\\source\\repos\\BSU-2024-2025\\testing-2025-6a-stefanovich-gerasimenok\\CalculatorCore\\CalculatorCore.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\CalculatorCore\\CalculatorCore\\obj\\",
+        "outputPath": "C:\\Users\\User\\source\\repos\\BSU-2024-2025\\testing-2025-6a-stefanovich-gerasimenok\\CalculatorCore\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net7.0"
+          "net9.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {}
           }
         },
@@ -34,11 +39,17 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "imports": [
             "net461",
             "net462",
@@ -55,36 +66,41 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\CalculatorCore\\CalculatorTests\\CalculatorTests.csproj": {
+    "C:\\Users\\User\\source\\repos\\BSU-2024-2025\\testing-2025-6a-stefanovich-gerasimenok\\CalculatorTests\\CalculatorTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\CalculatorCore\\CalculatorTests\\CalculatorTests.csproj",
+        "projectUniqueName": "C:\\Users\\User\\source\\repos\\BSU-2024-2025\\testing-2025-6a-stefanovich-gerasimenok\\CalculatorTests\\CalculatorTests.csproj",
         "projectName": "CalculatorTests",
-        "projectPath": "D:\\CalculatorCore\\CalculatorTests\\CalculatorTests.csproj",
+        "projectPath": "C:\\Users\\User\\source\\repos\\BSU-2024-2025\\testing-2025-6a-stefanovich-gerasimenok\\CalculatorTests\\CalculatorTests.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "D:\\CalculatorCore\\CalculatorTests\\obj\\",
+        "outputPath": "C:\\Users\\User\\source\\repos\\BSU-2024-2025\\testing-2025-6a-stefanovich-gerasimenok\\CalculatorTests\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net7.0"
+          "net9.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {
-              "D:\\CalculatorCore\\CalculatorCore\\CalculatorCore.csproj": {
-                "projectPath": "D:\\CalculatorCore\\CalculatorCore\\CalculatorCore.csproj"
+              "C:\\Users\\User\\source\\repos\\BSU-2024-2025\\testing-2025-6a-stefanovich-gerasimenok\\CalculatorCore\\CalculatorCore.csproj": {
+                "projectPath": "C:\\Users\\User\\source\\repos\\BSU-2024-2025\\testing-2025-6a-stefanovich-gerasimenok\\CalculatorCore\\CalculatorCore.csproj"
               }
             }
           }
@@ -93,27 +109,33 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
             "MSTest.TestAdapter": {
               "target": "Package",
-              "version": "[2.2.10, )"
+              "version": "[3.1.1, )"
             },
             "MSTest.TestFramework": {
               "target": "Package",
-              "version": "[2.2.10, )"
+              "version": "[3.1.1, )"
             },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[17.7.1, )"
+              "version": "[17.8.0, )"
             },
             "coverlet.collector": {
               "target": "Package",
-              "version": "[3.2.0, )"
+              "version": "[6.0.0, )"
             }
           },
           "imports": [
@@ -132,7 +154,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

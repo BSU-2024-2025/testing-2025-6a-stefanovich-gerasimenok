@@ -433,7 +433,10 @@
       },
       "CalculatorCore/1.0.0": {
         "runtime": {
-          "CalculatorCore.dll": {}
+          "CalculatorCore.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions/14.0.0.0": {
