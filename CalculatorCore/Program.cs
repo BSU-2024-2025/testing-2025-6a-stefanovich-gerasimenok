@@ -5,10 +5,30 @@ class Program
 {
     static void Main(string[] args)
     {
+        Console.WriteLine("=== Калькулятор ===");
+        Console.WriteLine("Выберите режим:");
+        Console.WriteLine("1. Простой калькулятор");
+        Console.WriteLine("2. Расширенный калькулятор (переменные, циклы, условия)");
+        Console.Write("Ваш выбор (1-2): ");
+
+        var choice = Console.ReadLine();
+
+        if (choice == "2")
+        {
+            RunAdvancedCalculator();
+        }
+        else
+        {
+            RunSimpleCalculator();
+        }
+    }
+
+    static void RunSimpleCalculator()
+    {
         var calculator = new Calculator();
         var calculatorService = new CalculatorService(calculator);
 
-        Console.WriteLine("=== Калькулятор ===");
+        Console.WriteLine("\n=== Простой калькулятор ===");
         Console.WriteLine("Доступные операции: +, -, *, /, ^ (степень), скобки (), факториал (!)");
         Console.WriteLine("Тригонометрические функции (в градусах): sin, cos, tan, ctg");
         Console.WriteLine("Константы: e (2.71828...), pi (3.14159...)");
@@ -49,8 +69,54 @@ class Program
 
             Console.WriteLine();
         }
+    }
 
-        Console.WriteLine("Работа завершена. Нажмите любую клавишу...");
-        Console.ReadKey();
+    static void RunAdvancedCalculator()
+    {
+        var calculator = new AdvancedCalculator();
+        var calculatorService = new CalculatorService(calculator);
+
+        Console.WriteLine("\n=== Расширенный калькулятор ===");
+        Console.WriteLine("Поддерживаются все функции простого калькулятора + дополнительные возможности:");
+        Console.WriteLine("- Переменные: x=5; y=x+3");
+        Console.WriteLine("- Условные операторы: if (x > 3) { y=10; } else { y=20; }");
+        Console.WriteLine("- Циклы: while (x < 10) { x=x+1; }");
+        Console.WriteLine("- Функция возврата: return 5+3");
+        Console.WriteLine("- Операторы сравнения: ==, !=, >, <, >=, <=");
+        Console.WriteLine("- Остаток от деления: 10 % 3");
+        Console.WriteLine("- Экспоненциальная функция: exp(1)");
+        Console.WriteLine("- Комментарии: // это комментарий");
+        Console.WriteLine("Примеры:");
+        Console.WriteLine("  x=5; y=3; x*y");
+        Console.WriteLine("  if (5>3) { 10; } else { 20; }");
+        Console.WriteLine("  x=0; while (x < 3) { x=x+1; } x");
+        Console.WriteLine("  return 2+3");
+        Console.WriteLine("Введите 'exit' для выхода");
+        Console.WriteLine();
+
+        while (true)
+        {
+            Console.Write("Введите выражение: ");
+            var input = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(input) || input.ToLower() == "exit")
+                break;
+
+            try
+            {
+                var result = calculatorService.EvaluateExpression(input);
+
+                if (result.Success)
+                    Console.WriteLine($"Результат: {result.Value}");
+                else
+                    Console.WriteLine($"Ошибка: {result.ErrorMessage}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
+            }
+
+            Console.WriteLine();
+        }
     }
 }
