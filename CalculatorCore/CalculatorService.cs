@@ -29,6 +29,7 @@ namespace CalculatorCore
                     "divide" or "/" => _calculator.TryDivide(a, b, out var result)
                         ? CalculatorResult.Ok(result)
                         : CalculatorResult.Fail("Division by zero"),
+                    "^" or "**" => CalculatorResult.Ok(Power(a, b)),
                     _ => CalculatorResult.Fail("Unknown operation")
                 };
             }
@@ -151,6 +152,35 @@ namespace CalculatorCore
 
         private decimal EvaluateFactor(string expression, ref int index)
         {
+            decimal result = EvaluatePower(expression, ref index);
+
+            // Факториал имеет высший приоритет после степени
+            while (index < expression.Length && expression[index] == '!')
+            {
+                index++;
+                result = Factorial(result);
+            }
+
+            return result;
+        }
+
+        private decimal EvaluatePower(string expression, ref int index)
+        {
+            decimal result = EvaluateBaseFactor(expression, ref index);
+
+            // Обрабатываем возведение в степень (правоассоциативная операция)
+            while (index < expression.Length && expression[index] == '^')
+            {
+                index++;
+                decimal exponent = EvaluatePower(expression, ref index); // Рекурсивно для правоассоциативности
+                result = Power(result, exponent);
+            }
+
+            return result;
+        }
+
+        private decimal EvaluateBaseFactor(string expression, ref int index)
+        {
             if (index >= expression.Length)
                 throw new ArgumentException("Неожиданный конец выражения");
 
@@ -190,20 +220,10 @@ namespace CalculatorCore
                 }
             }
 
-            // Проверяем факториал
             if (char.IsDigit(expression[index]) || expression[index] == '.' ||
                 expression[index] == '(' || expression[index] == '-')
             {
-                decimal result = EvaluateBaseFactor(expression, ref index);
-
-                // Проверяем факториал
-                if (index < expression.Length && expression[index] == '!')
-                {
-                    index++;
-                    result = Factorial(result);
-                }
-
-                return result;
+                return EvaluateSimpleFactor(expression, ref index);
             }
             else if (expression[index] == 'e' || expression[index] == 'E')
             {
@@ -232,7 +252,7 @@ namespace CalculatorCore
             }
         }
 
-        private decimal EvaluateBaseFactor(string expression, ref int index)
+        private decimal EvaluateSimpleFactor(string expression, ref int index)
         {
             if (index >= expression.Length)
                 throw new ArgumentException("Неожиданный конец выражения");
@@ -253,7 +273,7 @@ namespace CalculatorCore
             {
                 // Унарный минус
                 index++;
-                decimal factor = EvaluateBaseFactor(expression, ref index);
+                decimal factor = EvaluateSimpleFactor(expression, ref index);
                 return _calculator.Multiply(-1, factor);
             }
             else if (char.IsDigit(expression[index]) || expression[index] == '.')
@@ -264,6 +284,36 @@ namespace CalculatorCore
             else
             {
                 throw new ArgumentException($"Неожиданный символ: {expression[index]}");
+            }
+        }
+
+        private decimal Power(decimal baseValue, decimal exponent)
+        {
+            // Проверяем особые случаи
+            if (exponent == 0) return 1;
+            if (exponent == 1) return baseValue;
+            if (baseValue == 0) return 0;
+            if (baseValue == 1) return 1;
+
+            // Для целых показателей степени используем итеративное умножение
+            if (exponent == Math.Floor(exponent) && exponent > 0 && exponent <= 100)
+            {
+                decimal result = 1;
+                for (int i = 0; i < exponent; i++)
+                {
+                    result *= baseValue;
+                }
+                return result;
+            }
+
+            // Для дробных и отрицательных показателей используем Math.Pow
+            try
+            {
+                return (decimal)Math.Pow((double)baseValue, (double)exponent);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException($"Ошибка при возведении в степень: {ex.Message}");
             }
         }
 
@@ -387,7 +437,7 @@ namespace CalculatorCore
 
         private bool IsOperator(char c)
         {
-            return c == '+' || c == '-' || c == '*' || c == '/';
+            return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
         }
     }
 }
