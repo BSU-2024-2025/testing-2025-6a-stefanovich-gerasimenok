@@ -1,0 +1,15 @@
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\bin\Debug\net9.0\CalculatorCore.exe
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\bin\Debug\net9.0\CalculatorCore.deps.json
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\bin\Debug\net9.0\CalculatorCore.runtimeconfig.json
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\bin\Debug\net9.0\CalculatorCore.dll
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\bin\Debug\net9.0\CalculatorCore.pdb
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\obj\Debug\net9.0\CalculatorCore.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\obj\Debug\net9.0\CalculatorCore.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\obj\Debug\net9.0\CalculatorCore.AssemblyInfo.cs
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\obj\Debug\net9.0\CalculatorCore.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\obj\Debug\net9.0\CalculatorCore.sourcelink.json
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\obj\Debug\net9.0\CalculatorCore.dll
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\obj\Debug\net9.0\refint\CalculatorCore.dll
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\obj\Debug\net9.0\CalculatorCore.pdb
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\obj\Debug\net9.0\CalculatorCore.genruntimeconfig.cache
+C:\Users\User\source\repos\BSU-2024-2025\testing-2025-6a-stefanovich-gerasimenok\CalculatorCore\obj\Debug\net9.0\ref\CalculatorCore.dll
